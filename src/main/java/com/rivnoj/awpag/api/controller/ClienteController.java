@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rivnoj.awpag.domain.model.Cliente;
 import com.rivnoj.awpag.domain.repository.ClienteRepository;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -59,13 +60,14 @@ public class ClienteController {
   @SuppressWarnings("null")
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  public Cliente adicionar(@RequestBody Cliente cliente) {
+  public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
     return clienteRepository.save(cliente);
   }
 
   @SuppressWarnings("null")
   @PutMapping("/{clienteId}")
-  public ResponseEntity<Cliente> atualizar(@PathVariable Long clienteId, @RequestBody Cliente cliente) {
+  public ResponseEntity<Cliente> atualizar(@PathVariable Long clienteId, 
+                                           @Valid @RequestBody Cliente cliente) {
     if (!clienteRepository.existsById(clienteId)) {
       return ResponseEntity.notFound().build();
     }
