@@ -1,6 +1,6 @@
 package com.rivnoj.awpag.domain.service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,7 @@ public class ParcelamentoService {
     Cliente cliente = cadastroClienteService.buscar(novoParcelamento.getCliente().getId());
     
     novoParcelamento.setCliente(cliente);
-    novoParcelamento.setDataCriacao(LocalDateTime.now());
+    novoParcelamento.setDataCriacao(OffsetDateTime.now());
 
     return parcelamentoRepository.save(novoParcelamento);
   }

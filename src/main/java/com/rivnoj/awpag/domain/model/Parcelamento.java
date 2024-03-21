@@ -1,7 +1,7 @@
 package com.rivnoj.awpag.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import com.rivnoj.awpag.domain.validation.ValidationGroups;
 
@@ -53,5 +53,5 @@ public class Parcelamento {
   @Max(12)
   private Integer quantidadeParcelas;
 
-  private LocalDateTime dataCriacao;
+  private OffsetDateTime dataCriacao;
 }
