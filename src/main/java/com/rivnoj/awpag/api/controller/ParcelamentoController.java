@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rivnoj.awpag.api.model.ParcelamentoModel;
+import com.rivnoj.awpag.api.model.input.ParcelamentoInput;
 import com.rivnoj.awpag.domain.model.Parcelamento;
 import com.rivnoj.awpag.domain.repository.ParcelamentoRepository;
 import com.rivnoj.awpag.domain.service.ParcelamentoService;
+import com.rivnoj.awpag.api.assembler.ParcelamentoAssembler;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -26,32 +28,27 @@ import lombok.AllArgsConstructor;
 public class ParcelamentoController {
   private final ParcelamentoRepository parcelamentoRepository;
   private final ParcelamentoService parcelamentoService;
-  
+  private final ParcelamentoAssembler parcelamentoAssembler;
+
   @GetMapping
-  public List<Parcelamento> listar() {
-    return parcelamentoRepository.findAll();
+  public List<ParcelamentoModel> listar() {
+    return parcelamentoAssembler.toCollectionModel(parcelamentoRepository.findAll());
   }
 
   @SuppressWarnings("null")
   @GetMapping("/{parcelamentoId}")
   public ResponseEntity<ParcelamentoModel> buscar(@PathVariable Long parcelamentoId) {
     return parcelamentoRepository.findById(parcelamentoId)
-                                  .map(parcelamento -> {
-                                    var parcelamentoModel = new ParcelamentoModel();
-                                    parcelamentoModel.setId(parcelamento.getId());
-                                    parcelamentoModel.setNomeCliente(parcelamento.getCliente().getNome());
-                                    parcelamentoModel.setDescricao(parcelamento.getDescricao());
-                                    parcelamentoModel.setDataCriacao(parcelamento.getDataCriacao());
-                                    parcelamentoModel.setParcelas(parcelamento.getQuantidadeParcelas());
-                                    parcelamentoModel.setValorTotal(parcelamento.getValorTotal());
-                                    return ResponseEntity.ok(parcelamentoModel);
-                                  })
+                                  .map(parcelamentoAssembler::toModel)
+                                  .map(ResponseEntity::ok)
                                   .orElse(ResponseEntity.notFound().build());
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Parcelamento cadastrar(@Valid @RequestBody Parcelamento parcelamento) {
-    return parcelamentoService.cadastrar(parcelamento);
+  public ParcelamentoModel cadastrar(@Valid @RequestBody ParcelamentoInput parcelamentoInput) {
+    Parcelamento novoParcelamento = parcelamentoAssembler.toEntity(parcelamentoInput);
+    Parcelamento parcelamentoCadastrado = parcelamentoService.cadastrar(novoParcelamento);
+    return parcelamentoAssembler.toModel(parcelamentoCadastrado);
   }
 }
