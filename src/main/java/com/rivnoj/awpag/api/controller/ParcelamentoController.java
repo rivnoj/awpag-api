@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rivnoj.awpag.api.model.ParcelamentoModel;
 import com.rivnoj.awpag.domain.model.Parcelamento;
 import com.rivnoj.awpag.domain.repository.ParcelamentoRepository;
 import com.rivnoj.awpag.domain.service.ParcelamentoService;
@@ -33,9 +34,18 @@ public class ParcelamentoController {
 
   @SuppressWarnings("null")
   @GetMapping("/{parcelamentoId}")
-  public ResponseEntity<Parcelamento> buscar(@PathVariable Long parcelamentoId) {
+  public ResponseEntity<ParcelamentoModel> buscar(@PathVariable Long parcelamentoId) {
     return parcelamentoRepository.findById(parcelamentoId)
-                                  .map(ResponseEntity::ok)
+                                  .map(parcelamento -> {
+                                    var parcelamentoModel = new ParcelamentoModel();
+                                    parcelamentoModel.setId(parcelamento.getId());
+                                    parcelamentoModel.setNomeCliente(parcelamento.getCliente().getNome());
+                                    parcelamentoModel.setDescricao(parcelamento.getDescricao());
+                                    parcelamentoModel.setDataCriacao(parcelamento.getDataCriacao());
+                                    parcelamentoModel.setParcelas(parcelamento.getQuantidadeParcelas());
+                                    parcelamentoModel.setValorTotal(parcelamento.getValorTotal());
+                                    return ResponseEntity.ok(parcelamentoModel);
+                                  })
                                   .orElse(ResponseEntity.notFound().build());
   }
 
