@@ -18,6 +18,7 @@ import com.rivnoj.awpag.domain.model.Parcelamento;
 import com.rivnoj.awpag.domain.repository.ParcelamentoRepository;
 import com.rivnoj.awpag.domain.service.ParcelamentoService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -42,7 +43,7 @@ public class ParcelamentoController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Parcelamento cadastrar(@RequestBody Parcelamento parcelamento) {
+  public Parcelamento cadastrar(@Valid @RequestBody Parcelamento parcelamento) {
     return parcelamentoService.cadastrar(parcelamento);
   }
 

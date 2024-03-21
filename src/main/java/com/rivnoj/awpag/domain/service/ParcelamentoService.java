@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.rivnoj.awpag.domain.exception.NegocioException;
 import com.rivnoj.awpag.domain.model.Cliente;
 import com.rivnoj.awpag.domain.model.Parcelamento;
-import com.rivnoj.awpag.domain.repository.ClienteRepository;
 import com.rivnoj.awpag.domain.repository.ParcelamentoRepository;
 
 import lombok.AllArgsConstructor;
@@ -19,7 +18,6 @@ public class ParcelamentoService {
   private final ParcelamentoRepository parcelamentoRepository;
   private final CadastroClienteService cadastroClienteService;
 
-  @SuppressWarnings("null")
   @Transactional
   public Parcelamento cadastrar(Parcelamento novoParcelamento) {
     if (novoParcelamento.getId() != null) {
