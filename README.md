@@ -1,1 +1,1 @@
-REST API para prover serviços de gestão de parcelamento de clientes criada em Spring Boot. Curso ministrado pela AlgaWorks no Youtube entre os dias 19 e 25 de março de 2024: https://intensivao.algaworks.com/ .
+REST API para prover serviços de gestão de parcelamento a clientes criada em Spring Boot. Curso ministrado pela AlgaWorks no Youtube entre os dias 19 e 25 de março de 2024: https://intensivao.algaworks.com/ .
